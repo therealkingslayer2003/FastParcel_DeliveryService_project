@@ -1,9 +1,14 @@
 package krutyporokh.FastParcel.DeliveryService.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
 @Entity
 @Table(name = "employee")
@@ -22,11 +27,10 @@ public class Employee {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
     @Column(name = "name")
     private String name;
-    @OneToOne(mappedBy = "employee")
-    @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private Driver driver;
 }

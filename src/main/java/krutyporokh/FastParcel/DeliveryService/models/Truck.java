@@ -12,14 +12,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Truck {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int truckId;
+
     @OneToOne
     @MapsId
+    @JoinColumn(name = "employee_id")
     private Driver driver;
+
     @Column(name = "model")
     private String model;
+
     @Column(name = "capacity")
     private double capacity;
-
 }

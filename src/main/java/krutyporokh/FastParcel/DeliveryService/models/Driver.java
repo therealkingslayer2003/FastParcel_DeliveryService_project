@@ -14,13 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 public class Driver {
     @Id
-    @JoinColumn(name = "employee_id")
     private int employeeId;
+
     @OneToOne
     @JoinColumn(name = "employee_id")
+    @MapsId
     private Employee employee;
-    @OneToOne(mappedBy = "driver")
-    @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy = "driver", cascade = CascadeType.ALL)
     private Truck truck;
     @Column(name = "license_number")
     private String licenseNumber;

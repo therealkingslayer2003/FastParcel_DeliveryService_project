@@ -19,7 +19,7 @@ public class Order {
     @JoinColumn(name = "office_id")
     private Office office;
     @Column(name = "weight")
-    private float weight;
+    private double weight;
     @ManyToOne
     @JoinColumn(name = "order_category_id")
     private OrderCategory orderCategory;
