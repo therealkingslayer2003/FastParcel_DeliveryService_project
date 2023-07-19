@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.UniqueElements;
 
+import java.util.List;
+
 @Entity
 @Table(name = "employee")
 @Data
@@ -33,4 +35,7 @@ public class Employee {
     private String name;
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private Driver driver;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderStatusHistory> statusHistory;
 }

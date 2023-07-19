@@ -1,4 +1,4 @@
-package krutyporokh.FastParcel.DeliveryService.repositories;
+package krutyporokh.FastParcel.DeliveryService.repositories.employee;
 
 import krutyporokh.FastParcel.DeliveryService.models.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;

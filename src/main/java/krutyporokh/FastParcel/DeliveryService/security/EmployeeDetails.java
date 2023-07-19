@@ -15,7 +15,7 @@ public class EmployeeDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(employee.getEmployeeRole().toString()));
+        return Collections.singletonList(new SimpleGrantedAuthority(employee.getEmployeeRole().getEmployeeRoleName()));
     }
 
     @Override
@@ -46,5 +46,8 @@ public class EmployeeDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    public Integer getEmployeeId(){
+        return employee.getEmployeeId();
     }
 }

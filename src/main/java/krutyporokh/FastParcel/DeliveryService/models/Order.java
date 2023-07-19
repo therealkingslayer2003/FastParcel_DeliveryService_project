@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
-@Table(name = "order")
+@Table(name = "\"order\"")
 @Data
 public class Order {
     @Id
@@ -26,4 +28,6 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "order_status_id")
     private OrderStatus orderStatus;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderStatusHistory> statusHistory;
 }

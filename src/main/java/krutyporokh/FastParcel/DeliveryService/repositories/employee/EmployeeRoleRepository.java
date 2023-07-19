@@ -1,4 +1,4 @@
-package krutyporokh.FastParcel.DeliveryService.repositories;
+package krutyporokh.FastParcel.DeliveryService.repositories.employee;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import krutyporokh.FastParcel.DeliveryService.models.EmployeeRole;

@@ -1,7 +1,7 @@
 package krutyporokh.FastParcel.DeliveryService.services;
 
 import krutyporokh.FastParcel.DeliveryService.models.Employee;
-import krutyporokh.FastParcel.DeliveryService.repositories.EmployeeRepository;
+import krutyporokh.FastParcel.DeliveryService.repositories.employee.EmployeeRepository;
 import krutyporokh.FastParcel.DeliveryService.security.EmployeeDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -7,6 +7,8 @@ import krutyporokh.FastParcel.DeliveryService.models.Employee;
 import krutyporokh.FastParcel.DeliveryService.models.EmployeeRole;
 import krutyporokh.FastParcel.DeliveryService.models.Truck;
 import krutyporokh.FastParcel.DeliveryService.repositories.*;
+import krutyporokh.FastParcel.DeliveryService.repositories.employee.EmployeeRepository;
+import krutyporokh.FastParcel.DeliveryService.repositories.employee.EmployeeRoleRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -14,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
