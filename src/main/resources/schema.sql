@@ -53,7 +53,9 @@ CREATE TABLE "order"(
                         office_id INT REFERENCES "office"(office_id) NOT NULL,
                         weight FLOAT NOT NULL,
                         order_category_id INT REFERENCES "order_category"(order_category_id) NOT NULL,
-                        order_status_id INT REFERENCES "order_status"(order_status_id) NOT NULL
+                        order_status_id INT REFERENCES "order_status"(order_status_id) NOT NULL,
+                        destination_office_id INT REFERENCES "office"(office_id)
+
 );
 
 CREATE TABLE "order_status_history"(

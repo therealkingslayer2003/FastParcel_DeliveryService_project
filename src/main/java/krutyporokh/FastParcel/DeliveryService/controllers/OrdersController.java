@@ -2,7 +2,6 @@ package krutyporokh.FastParcel.DeliveryService.controllers;
 
 import jakarta.validation.Valid;
 import krutyporokh.FastParcel.DeliveryService.DTO.OrderDTO;
-import krutyporokh.FastParcel.DeliveryService.models.Order;
 import krutyporokh.FastParcel.DeliveryService.services.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/branch-worker")
 @AllArgsConstructor
 @PreAuthorize("hasRole('ROLE_BRANCH_WORKER')")
-public class OrderController {
+public class OrdersController {
     private final OrderService orderService;
 
         @PostMapping("/create-new-order")

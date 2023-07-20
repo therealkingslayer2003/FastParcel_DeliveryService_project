@@ -22,4 +22,7 @@ public class Office {
     private List<Employee> employeeList;
     @OneToMany(mappedBy = "office")
     private List<Order> orderList;
+    @OneToMany(mappedBy = "destinationOffice")
+    private List<Order> orderList2;
+
 }

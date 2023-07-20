@@ -28,6 +28,9 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "order_status_id")
     private OrderStatus orderStatus;
+    @ManyToOne
+    @JoinColumn(name = "office_id")
+    private Office destinationOffice;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderStatusHistory> statusHistory;
 }

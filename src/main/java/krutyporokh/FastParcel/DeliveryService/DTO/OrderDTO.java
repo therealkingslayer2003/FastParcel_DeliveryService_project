@@ -1,7 +1,6 @@
 package krutyporokh.FastParcel.DeliveryService.DTO;
 
 import jakarta.validation.constraints.*;
-import krutyporokh.FastParcel.DeliveryService.models.OrderStatusHistory;
 import lombok.Data;
 
 @Data
@@ -16,5 +15,6 @@ public class OrderDTO {
     private double weight;
     @NotNull(message = "Order category should not be empty")
     private Integer orderCategory;
-    private Integer orderStatusHistory;
+    @NotNull(message = "Destination office id should not be empty")
+    private Integer destinationOfficeId;
 }
