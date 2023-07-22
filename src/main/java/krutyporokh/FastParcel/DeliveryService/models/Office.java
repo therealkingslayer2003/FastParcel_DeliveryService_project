@@ -20,9 +20,9 @@ public class Office {
     private String officeLocation;
     @OneToMany(mappedBy = "office")
     private List<Employee> employeeList;
-    @OneToMany(mappedBy = "office")
-    private List<Order> orderList;
+    @OneToMany(mappedBy = "sourceOffice")
+    private List<Order> sourceOffices;
     @OneToMany(mappedBy = "destinationOffice")
-    private List<Order> orderList2;
+    private List<Order> destinationOffices;
 
 }

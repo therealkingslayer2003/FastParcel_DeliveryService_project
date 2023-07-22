@@ -3,11 +3,15 @@ package krutyporokh.FastParcel.DeliveryService.models;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "shipment")
 @Data
+@EqualsAndHashCode
 public class Shipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +30,10 @@ public class Shipment {
     @ManyToOne
     @JoinColumn(name = "destination_office_id")
     private Office destinationOffice;
+    @ManyToMany
+    @JoinTable(
+            name = "shipment_order",
+            joinColumns = @JoinColumn(name = "shipment_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    private List<Order> orders;
 }

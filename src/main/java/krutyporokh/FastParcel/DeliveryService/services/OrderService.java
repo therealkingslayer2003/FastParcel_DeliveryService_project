@@ -38,7 +38,7 @@ public class OrderService {
         //Filling the fields
         orderToSave.setClient(clientRepository.findById(orderDTO.getClientId()).
                 orElseThrow(() -> new RuntimeException("Client not found")));
-        orderToSave.setOffice(officeRepository.findById(orderDTO.getOfficeId()).
+        orderToSave.setSourceOffice(officeRepository.findById(orderDTO.getOfficeId()).
                 orElseThrow(() -> new RuntimeException("Office not found")));
         orderToSave.setWeight(orderDTO.getWeight());
         orderToSave.setOrderCategory(orderCategoryRepository.findById(orderDTO.getOrderCategory()).
@@ -77,7 +77,7 @@ public class OrderService {
     private OrderDTO convertToDTO(Order order) {
         OrderDTO dto = new OrderDTO();
         dto.setClientId(order.getClient().getClientId());
-        dto.setOfficeId(order.getOffice().getOfficeId());
+        dto.setOfficeId(order.getSourceOffice().getOfficeId());
         dto.setWeight(order.getWeight());
         dto.setOrderCategory(order.getOrderCategory().getOrderCategoryId());
 
