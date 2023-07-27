@@ -2,6 +2,7 @@ package krutyporokh.FastParcel.DeliveryService.services;
 
 import krutyporokh.FastParcel.DeliveryService.DTO.OrderDTO;
 import krutyporokh.FastParcel.DeliveryService.models.Order;
+import krutyporokh.FastParcel.DeliveryService.models.OrderStatus;
 import krutyporokh.FastParcel.DeliveryService.models.OrderStatusHistory;
 import krutyporokh.FastParcel.DeliveryService.repositories.ClientRepository;
 import krutyporokh.FastParcel.DeliveryService.repositories.OfficeRepository;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Service
@@ -60,15 +62,8 @@ public class OrderService {
         orderStatusHistory.setOrder(order);
         orderStatusHistory.setOrderStatus(order.getOrderStatus());
 
-        //Getting a user from his session
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        EmployeeDetails employeeDetails = (EmployeeDetails) authentication.getPrincipal();
-
-        Integer employeeId = employeeDetails.getEmployeeId();
-
-        orderStatusHistory.setEmployee(employeeRepository.findById(employeeId).
-                orElseThrow(() -> new RuntimeException("Employee not found")));
+        orderStatusHistory.setEmployee(employeeRepository.findById(getAuthenticatedEmployeeId())
+                .orElseThrow(() -> new RuntimeException("Employee not found")));
 
         orderStatusHistory.setChangedAt(LocalDateTime.now());
 
@@ -84,5 +79,55 @@ public class OrderService {
         return dto;
     }
 
+
+    public void updateOrderStatus(String status, Integer orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        OrderStatus orderStatus = orderStatusRepository.findByOrderStatusName(status)
+                .orElseThrow(() -> new RuntimeException("Order status not found"));
+
+        // Check if the current order status is not the same as the new status
+        if (!order.getOrderStatus().getOrderStatusName().equals(status)) {
+            order.setOrderStatus(orderStatus);
+
+            // Creating the new OrderStatusHistory object
+            OrderStatusHistory orderStatusHistory = new OrderStatusHistory();
+            orderStatusHistory.setOrder(order);
+            orderStatusHistory.setOrderStatus(orderStatus);
+
+            orderStatusHistory.setEmployee(employeeRepository.findById(getAuthenticatedEmployeeId())
+                    .orElseThrow(() -> new RuntimeException("Employee not found")));
+
+            orderStatusHistory.setChangedAt(LocalDateTime.now());
+
+            // Saving the OrderStatusHistory object
+            orderStatusHistoryRepository.save(orderStatusHistory);
+        } else {
+            throw new RuntimeException("The current order status is the same as the new status");
+        }
+    }
+
+    public void changeOrderStatusToWarehouse(Integer orderId) {
+        updateOrderStatus("IN_THE_WAREHOUSE", orderId);
+    }
+
+    public void changeOrderStatusToShipment(Integer orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        // Check if current status is IN_THE_WAREHOUSE before changing to READY_FOR_SHIPMENT
+        if (order.getOrderStatus().getOrderStatusName().equals("IN_THE_WAREHOUSE")) {
+            updateOrderStatus("READY_FOR_SHIPMENT", orderId);
+        } else {
+            throw new RuntimeException("Order status is not IN_THE_WAREHOUSE");
+        }
+    }
+
+    public Integer getAuthenticatedEmployeeId() {
+        //Getting a user from current session
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        EmployeeDetails employeeDetails = (EmployeeDetails) authentication.getPrincipal();
+        return employeeDetails.getEmployeeId();
+    }
 
 }

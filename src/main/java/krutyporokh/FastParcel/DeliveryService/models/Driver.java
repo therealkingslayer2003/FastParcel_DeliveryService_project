@@ -26,4 +26,5 @@ public class Driver {
     private String licenseNumber;
     @OneToMany(mappedBy = "driver")
     private List<Shipment> shipmentList;
+
 }

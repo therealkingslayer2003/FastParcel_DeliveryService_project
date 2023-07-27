@@ -1,4 +1,4 @@
-package krutyporokh.FastParcel.DeliveryService.repositories;
+package krutyporokh.FastParcel.DeliveryService.repositories.shipment;
 
 import krutyporokh.FastParcel.DeliveryService.models.ShipmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;

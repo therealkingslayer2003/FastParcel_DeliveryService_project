@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/delivery-manager")
 @PreAuthorize("hasRole('ROLE_DELIVERY_MANAGER')")
 @AllArgsConstructor
-public class ShipmentsController {
+public class ShipmentManagementController {
     private final ShipmentService shipmentService;
     @PostMapping("/create-new-shipment")
     public ResponseEntity<ShipmentResponseDTO> createNewShipment(@Valid @RequestBody ShipmentCreateDTO shipmentCreateDTO){

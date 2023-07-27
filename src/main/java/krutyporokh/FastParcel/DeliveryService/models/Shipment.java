@@ -1,10 +1,8 @@
 package krutyporokh.FastParcel.DeliveryService.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -25,11 +23,14 @@ public class Shipment {
     @Column(name = "total_weight")
     private double totalWeight;
     @ManyToOne
-    @JoinColumn(name = "current_office_id")
-    private Office currentOffice;
+    @JoinColumn(name = "source_office_id")
+    private Office sourceOffice;
     @ManyToOne
     @JoinColumn(name = "destination_office_id")
     private Office destinationOffice;
+    @OneToMany(mappedBy = "shipment")
+    private List<ShipmentStatusHistory> shipmentStatusHistories;
+
     @ManyToMany
     @JoinTable(
             name = "shipment_order",

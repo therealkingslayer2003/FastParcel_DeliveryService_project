@@ -6,10 +6,10 @@ import java.util.List;
 
 @Data
 public class ShipmentResponseDTO {
-    private String employee;
+    private String driverForShipment;
     private String shipmentStatus;
     private Double totalWeight;
-    private String currentOffice;
+    private String sourceOffice;
     private String destinationOffice;
     private List<Integer> orderList;
 }
