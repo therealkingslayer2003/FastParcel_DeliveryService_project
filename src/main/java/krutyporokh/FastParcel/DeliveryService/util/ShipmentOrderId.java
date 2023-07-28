@@ -1,5 +1,6 @@
 package krutyporokh.FastParcel.DeliveryService.util;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +11,8 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode
 public class ShipmentOrderId implements Serializable {
-    private int shipmentId;
-    private int orderId;
+    @Column(name = "shipment_id")
+    private Integer shipmentId;
+    @Column(name = "order_id")
+    private Integer orderId;
 }

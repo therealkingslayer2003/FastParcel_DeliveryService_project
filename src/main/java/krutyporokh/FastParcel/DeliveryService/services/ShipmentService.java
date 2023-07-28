@@ -4,6 +4,7 @@ import krutyporokh.FastParcel.DeliveryService.DTO.DriverShipmentsResponseDTO;
 import krutyporokh.FastParcel.DeliveryService.DTO.ShipmentCreateDTO;
 import krutyporokh.FastParcel.DeliveryService.DTO.ShipmentResponseDTO;
 import krutyporokh.FastParcel.DeliveryService.models.*;
+import krutyporokh.FastParcel.DeliveryService.repositories.ShipmentOrderRepository;
 import krutyporokh.FastParcel.DeliveryService.repositories.shipment.ShipmentRepository;
 import krutyporokh.FastParcel.DeliveryService.repositories.shipment.ShipmentStatusHistoryRepository;
 import krutyporokh.FastParcel.DeliveryService.repositories.shipment.ShipmentStatusRepository;
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 public class ShipmentService {
     private final ShipmentRepository shipmentRepository;
     private final ShipmentStatusRepository shipmentStatusRepository;
+    private final ShipmentOrderRepository shipmentOrderRepository;
+    private final OrderService orderService;
     private final OrderRepository orderRepository;
     private final EmployeeRepository employeeRepository;
     private final ShipmentStatusHistoryRepository shipmentStatusHistoryRepository;
@@ -75,7 +78,7 @@ public class ShipmentService {
     private List<Order> getOrderList(List<Integer> orderIds) {
         return orderIds.stream()
                 .map(orderId -> orderRepository.findById(orderId)
-                        .orElseThrow(() -> new RuntimeException("Order with id " + orderId + " not found")))
+                        .orElseThrow(() -> new RuntimeException("Shipment with id " + orderId + " not found")))
                 .collect(Collectors.toList());
     }
 
@@ -148,4 +151,69 @@ public class ShipmentService {
         return employeeDetails.getEmployeeId();
     }
 
+    private Shipment getShipment(Integer shipmentId) {
+        return shipmentRepository.findById(shipmentId)
+                .orElseThrow(() -> new RuntimeException("Shipment not found"));
+    }
+
+    private List<Order> getOrdersFromShipment(Integer shipmentId) {
+        List<ShipmentOrder> shipmentOrders = shipmentOrderRepository.findAllByShipmentOrderId_ShipmentId(shipmentId);
+        return shipmentOrders.stream().map(ShipmentOrder::getOrder).toList();
+    }
+
+    public void changeShipmentAndOrderStatusToTransit(Integer shipmentId) {
+        Shipment shipment = getShipment(shipmentId);
+        if (!shipment.getShipmentStatus().getShipmentStatusName().equals("FORMED")) {
+            throw new RuntimeException("Current shipment status is not FORMED");
+        }
+        updateShipmentStatus("IN_TRANSIT", shipmentId);
+
+        List<Order> orders = getOrdersFromShipment(shipmentId);
+        orders.forEach(order -> orderService.changeOrderStatusToTransit(order.getOrderId()));
+    }
+
+    public void changeShipmentAndOrderStatusToDelivered(Integer shipmentId) {
+        Shipment shipment = getShipment(shipmentId);
+        if (!shipment.getShipmentStatus().getShipmentStatusName().equals("IN_TRANSIT")) {
+            throw new RuntimeException("Current shipment status is not IN_TRANSIT");
+        }
+        updateShipmentStatus("DELIVERED", shipmentId);
+
+        List<Order> orders = getOrdersFromShipment(shipmentId);
+        orders.forEach(order -> orderService.changeOrderStatusToDelivered(order.getOrderId()));
+    }
+
+    public void updateShipmentStatus(String status, Integer shipmentId) {
+        Shipment shipment = shipmentRepository.findById(shipmentId)
+                .orElseThrow(() -> new RuntimeException("Shipment not found"));
+
+        ShipmentStatus shipmentStatus = shipmentStatusRepository.findByShipmentStatusName(status)
+                .orElseThrow(() -> new RuntimeException("Shipment status not found"));
+
+        // Check if the current shipment status is not the same as the new status
+        if (!shipment.getShipmentStatus().getShipmentStatusName().equals(status)) {
+            shipment.setShipmentStatus(shipmentStatus);
+
+            // Creating the new ShipmentStatusHistory object
+            ShipmentStatusHistory shipmentStatusHistory = new ShipmentStatusHistory();
+            shipmentStatusHistory.setShipment(shipment);
+            shipmentStatusHistory.setShipmentStatus(shipmentStatus);
+
+            shipmentStatusHistory.setDriver(employeeRepository.findById(getAuthenticatedEmployeeId())
+                    .orElseThrow(() -> new RuntimeException("Driver not found")));
+
+            shipmentStatusHistory.setChangedAt(LocalDateTime.now());
+
+            // Saving the ShipmentStatusHistory object
+            shipmentStatusHistoryRepository.save(shipmentStatusHistory);
+        } else {
+            throw new RuntimeException("The current shipment status is the same as the new status");
+        }
+    }
+
+    public ShipmentResponseDTO getTrackedShipment(int id) {
+        Shipment shipment = shipmentRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("Shipment not found"));
+        return convertToDTO(shipment);
+    }
 }

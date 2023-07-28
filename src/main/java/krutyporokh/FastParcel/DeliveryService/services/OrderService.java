@@ -123,11 +123,43 @@ public class OrderService {
         }
     }
 
+    public void changeOrderStatusToTransit(Integer orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        // Check if current status is READY_FOR_SHIPMENT before changing to IN_TRANSIT
+        if (order.getOrderStatus().getOrderStatusName().equals("READY_FOR_SHIPMENT")) {
+            updateOrderStatus("IN_TRANSIT", orderId);
+        } else {
+            throw new RuntimeException("Order status is not READY_FOR_SHIPMENT");
+        }
+    }
+
+    public void changeOrderStatusToDelivered(Integer orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        // Check if current status is IN_TRANSIT before changing to DELIVERED
+        if (order.getOrderStatus().getOrderStatusName().equals("IN_TRANSIT")) {
+            updateOrderStatus("DELIVERED", orderId);
+        } else {
+            throw new RuntimeException("Current order status is not IN_TRANSIT");
+        }
+    }
+
+    public void changeOrderStatusToReceived(Integer orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        // Check if current status is DELIVERED before changing to RECEIVED
+        if (order.getOrderStatus().getOrderStatusName().equals("DELIVERED")) {
+            updateOrderStatus("RECEIVED", orderId);
+        } else {
+            throw new RuntimeException("Current order status is not DELIVERED");
+        }
+    }
+
+    //Getting the user from current session
     public Integer getAuthenticatedEmployeeId() {
-        //Getting a user from current session
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         EmployeeDetails employeeDetails = (EmployeeDetails) authentication.getPrincipal();
         return employeeDetails.getEmployeeId();
     }
-
 }

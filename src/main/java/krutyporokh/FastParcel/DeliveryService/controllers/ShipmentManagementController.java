@@ -9,10 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/delivery-manager")
@@ -24,5 +21,11 @@ public class ShipmentManagementController {
     public ResponseEntity<ShipmentResponseDTO> createNewShipment(@Valid @RequestBody ShipmentCreateDTO shipmentCreateDTO){
         ShipmentResponseDTO shipmentResponseDTO = shipmentService.createNewShipment(shipmentCreateDTO);
         return new ResponseEntity<>(shipmentResponseDTO, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/track-shipment-by-id/{id}")
+    public ResponseEntity<?> trackShipmentById(@PathVariable("id") int id){
+        ShipmentResponseDTO shipmentResponseDTO = shipmentService.getTrackedShipment(id);
+        return new ResponseEntity<>(shipmentResponseDTO, HttpStatus.OK);
     }
 }

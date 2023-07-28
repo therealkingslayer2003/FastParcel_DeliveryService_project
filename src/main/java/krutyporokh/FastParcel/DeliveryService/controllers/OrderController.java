@@ -34,4 +34,10 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("/order-to-received/{id}")     //Order status from "DELIVERED" to "RECEIVED"
+    public ResponseEntity<?> changeOrderStatusToReceived(@PathVariable("id") Integer orderId) {
+        orderService.changeOrderStatusToReceived(orderId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
