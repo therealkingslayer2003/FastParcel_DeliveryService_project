@@ -44,7 +44,15 @@ public class MultiHttpSecurityConfig {
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers(new OrRequestMatcher(
                                 new AntPathRequestMatcher("/api/register/**"),
-                                new AntPathRequestMatcher("/api/login/**")
+                                new AntPathRequestMatcher("/api/login/**"),
+                                new AntPathRequestMatcher("/swagger-ui/**"),
+                                new AntPathRequestMatcher("/swagger-resources/**"),
+                                new AntPathRequestMatcher("/v3/api-docs/**"),
+                                new AntPathRequestMatcher("/v2/api-docs/**"),
+                                new AntPathRequestMatcher("/configuration/ui"),
+                                new AntPathRequestMatcher("/configuration/security"),
+                                new AntPathRequestMatcher("/webjars/**"),
+                                new AntPathRequestMatcher("/swagger-ui.html")
                         )).permitAll()
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable);
