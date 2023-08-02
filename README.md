@@ -7,6 +7,8 @@ THIS IS ONLY BACKEND (SERVER) API IMPLEMENTATION
 The Business Functions diagram:
 ![image](https://github.com/therealkingslayer2003/FastParcel_DeliveryService_project/assets/93054726/6e836a00-e28e-4733-828d-def423fa7f53)
 
+The designed database:
+![image](https://github.com/therealkingslayer2003/FastParcel_DeliveryService_project/assets/93054726/ebf07874-a492-4f4a-9677-1740ece39ce5)
 
 
 As you can see, there are 3 roles in this project: Delivery Manager, Branch Worker, Driver.
