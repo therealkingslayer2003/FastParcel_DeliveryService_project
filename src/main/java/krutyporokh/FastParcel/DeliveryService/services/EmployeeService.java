@@ -9,9 +9,12 @@ import krutyporokh.FastParcel.DeliveryService.models.Truck;
 import krutyporokh.FastParcel.DeliveryService.repositories.*;
 import krutyporokh.FastParcel.DeliveryService.repositories.employee.EmployeeRepository;
 import krutyporokh.FastParcel.DeliveryService.repositories.employee.EmployeeRoleRepository;
+import krutyporokh.FastParcel.DeliveryService.security.EmployeeDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,19 +71,18 @@ public class EmployeeService {
         truckRepository.save(truck);
     }
 
+    //Getting the user from current session
+    public Integer getAuthenticatedEmployeeId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        EmployeeDetails employeeDetails = (EmployeeDetails) authentication.getPrincipal();
+        return employeeDetails.getEmployeeId();
+    }
+
+    public Optional<Employee> findById(Integer employeeId) {
+        return employeeRepository.findById(employeeId);
+    }
 }
 
-
-//    @Transactional
-//    public Optional<Employee> authenticate(EmployeeDTO employeeDto) {
-//
-//        Optional<Employee> employee = employeeRepository.findByEmail(employeeDto.getEmail());
-//
-//        if (employee.isPresent() && bCryptPasswordEncoder.matches(employeeDto.getPassword(), employee.get().getPassword())) {
-//            return employee;
-//        }
-//        return Optional.empty();
-//    }
 
 
 

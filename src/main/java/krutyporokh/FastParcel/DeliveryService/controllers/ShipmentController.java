@@ -1,7 +1,6 @@
 package krutyporokh.FastParcel.DeliveryService.controllers;
 
 import krutyporokh.FastParcel.DeliveryService.DTO.DriverShipmentsResponseDTO;
-import krutyporokh.FastParcel.DeliveryService.services.OrderService;
 import krutyporokh.FastParcel.DeliveryService.services.ShipmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,15 +21,11 @@ public class ShipmentController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/shipment-and-orders-to-transit/{shipment-id}")
-    public ResponseEntity<?> changeOrderAndShipmentStatusToTransit(@PathVariable("shipment-id") int shipmentId) {
-        shipmentService.changeShipmentAndOrderStatusToTransit(shipmentId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
-    @PostMapping("/shipment-and-orders-to-delivered/{shipment-id}")
-    public ResponseEntity<?> changeOrderAndShipmentStatusToDelivered(@PathVariable("shipment-id") int shipmentId) {
-        shipmentService.changeShipmentAndOrderStatusToDelivered(shipmentId);
+    @PostMapping("/shipment-and-orders-to-{statusName}/{shipment-id}")
+    public ResponseEntity<?> changeShipmentAndOrderStatus(@PathVariable("shipment-id") int shipmentId,
+                                                                     @PathVariable("statusName") String statusName) {
+        shipmentService.changeShipmentAndOrderStatus(shipmentId, statusName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

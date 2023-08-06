@@ -2,6 +2,7 @@ package krutyporokh.FastParcel.DeliveryService.controllers;
 
 import jakarta.validation.Valid;
 import krutyporokh.FastParcel.DeliveryService.DTO.OrderDTO;
+import krutyporokh.FastParcel.DeliveryService.services.EmployeeService;
 import krutyporokh.FastParcel.DeliveryService.services.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,21 +23,9 @@ public class OrderController {
         return new ResponseEntity<>(responseOrderDTO,HttpStatus.CREATED);
     }
 
-    @PostMapping("/order-to-warehouse/{id}")    //Order status from "ACCEPTED" to "IN_THE_WAREHOUSE"
-    public ResponseEntity<?> changeOrderStatusToWarehouse(@PathVariable("id") Integer orderId) {
-            orderService.changeOrderStatusToWarehouse(orderId);
-            return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/order-to-shipment/{id}")     //Order status from "IN_THE_WAREHOUSE" to "READY_FOR_SHIPMENT"
-    public ResponseEntity<?> changeOrderStatusToShipment(@PathVariable("id") Integer orderId) {
-        orderService.changeOrderStatusToShipment(orderId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/order-to-received/{id}")     //Order status from "DELIVERED" to "RECEIVED"
-    public ResponseEntity<?> changeOrderStatusToReceived(@PathVariable("id") Integer orderId) {
-        orderService.changeOrderStatusToReceived(orderId);
+    @PostMapping("/change-order-status/{id}/{newStatus}")
+    public ResponseEntity<?> changeOrderStatus(@PathVariable("id") Integer orderId, @PathVariable("newStatus") String newStatus) {
+        orderService.changeOrderStatusAndRecordHistory(orderId, newStatus);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
