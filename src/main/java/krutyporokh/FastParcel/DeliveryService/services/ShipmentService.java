@@ -3,6 +3,7 @@ package krutyporokh.FastParcel.DeliveryService.services;
 import krutyporokh.FastParcel.DeliveryService.DTO.DriverShipmentsResponseDTO;
 import krutyporokh.FastParcel.DeliveryService.DTO.ShipmentCreateDTO;
 import krutyporokh.FastParcel.DeliveryService.DTO.ShipmentResponseDTO;
+import krutyporokh.FastParcel.DeliveryService.mappers.ShipmentMapper;
 import krutyporokh.FastParcel.DeliveryService.models.*;
 import krutyporokh.FastParcel.DeliveryService.repositories.shipment.ShipmentRepository;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class ShipmentService {
     private final OrderService orderService;
     private final EmployeeService employeeService;
     private final ShipmentStatusHistoryService shipmentStatusHistoryService;
+    private final ShipmentMapper shipmentMapper;
 
 
     public ShipmentResponseDTO createNewShipment(ShipmentCreateDTO shipmentCreateDTO) {
@@ -50,7 +52,7 @@ public class ShipmentService {
         shipmentStatusHistoryService.createShipmentStatusHistory(shipment, shipmentCreateDTO);
 
         // Converting the shipment to DTO and returning
-        return convertToDTO(shipment);
+        return shipmentMapper.toDto(shipment);
     }
 
     private List<Order> getOrderList(List<Integer> orderIds) {
@@ -100,17 +102,6 @@ public class ShipmentService {
         return shipmentRepository.save(shipment);
     }
 
-    private ShipmentResponseDTO convertToDTO(Shipment shipment) {
-        ShipmentResponseDTO dto = new ShipmentResponseDTO();
-        dto.setDriverForShipment(shipment.getDriver().getEmployee().getName());
-        dto.setShipmentStatus(shipment.getShipmentStatus().getShipmentStatusName());
-        dto.setTotalWeight(shipment.getTotalWeight());
-        dto.setSourceOffice(shipment.getSourceOffice().getOfficeLocation());
-        dto.setDestinationOffice(shipment.getDestinationOffice().getOfficeLocation());
-        dto.setOrderList(shipment.getOrders().stream().map(Order::getOrderId).collect(Collectors.toList()));
-        return dto;
-    }
-
     public DriverShipmentsResponseDTO getAssignedShipments() {
         int driverId = employeeService.getAuthenticatedEmployeeId();
 
@@ -146,7 +137,7 @@ public class ShipmentService {
     public ShipmentResponseDTO getTrackedShipment(int id) {
         Shipment shipment = shipmentRepository.findById(id).
                 orElseThrow(() -> new RuntimeException("Shipment not found"));
-        return convertToDTO(shipment);
+        return shipmentMapper.toDto(shipment);
     }
 
 }

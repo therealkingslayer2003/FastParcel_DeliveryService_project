@@ -1,13 +1,10 @@
 package krutyporokh.FastParcel.DeliveryService.services;
 
 import krutyporokh.FastParcel.DeliveryService.DTO.OrderDTO;
+import krutyporokh.FastParcel.DeliveryService.mappers.OrderMapper;
 import krutyporokh.FastParcel.DeliveryService.models.Order;
 import krutyporokh.FastParcel.DeliveryService.models.OrderStatus;
-import krutyporokh.FastParcel.DeliveryService.repositories.ClientRepository;
-import krutyporokh.FastParcel.DeliveryService.repositories.OfficeRepository;
-import krutyporokh.FastParcel.DeliveryService.repositories.order.OrderCategoryRepository;
 import krutyporokh.FastParcel.DeliveryService.repositories.order.OrderRepository;
-import krutyporokh.FastParcel.DeliveryService.repositories.order.OrderStatusRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +21,7 @@ public class OrderService {
     private final OrderCategoryService orderCategoryService;
     private final OrderStatusService orderStatusService;
     private final OrderStatusHistoryService orderStatusHistoryService;
+    private final OrderMapper orderMapper;
 
 
     public OrderDTO createNewOrder(OrderDTO orderDTO) {
@@ -44,7 +42,7 @@ public class OrderService {
 
         orderStatusHistoryService.createNewOrderStatusHistory(orderToSave, orderToSave.getOrderStatus());
 
-        return convertToDTO(orderToSave);
+        return orderMapper.toDto(orderToSave);
     }
 
     public void changeOrderStatusAndRecordHistory(Integer orderId, String newOrderStatus) {
@@ -59,16 +57,6 @@ public class OrderService {
 
         // Record the status history
         orderStatusHistoryService.createNewOrderStatusHistory(order, orderStatus);
-    }
-
-    private OrderDTO convertToDTO(Order order) {
-        OrderDTO dto = new OrderDTO();
-        dto.setClientId(order.getClient().getClientId());
-        dto.setOfficeId(order.getSourceOffice().getOfficeId());
-        dto.setWeight(order.getWeight());
-        dto.setOrderCategory(order.getOrderCategory().getOrderCategoryId());
-
-        return dto;
     }
 
     public Optional<Order> findById(Integer orderId) {
