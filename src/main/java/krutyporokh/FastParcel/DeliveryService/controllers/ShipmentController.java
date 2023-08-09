@@ -1,6 +1,7 @@
 package krutyporokh.FastParcel.DeliveryService.controllers;
 
 import krutyporokh.FastParcel.DeliveryService.DTO.DriverShipmentsResponseDTO;
+import krutyporokh.FastParcel.DeliveryService.DTO.ShipmentStatusChangeDTO;
 import krutyporokh.FastParcel.DeliveryService.services.ShipmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,12 +23,12 @@ public class ShipmentController {
     }
 
 
-    @PostMapping("/shipment-and-orders-to-{statusName}/{shipment-id}")
-    public ResponseEntity<?> changeShipmentAndOrderStatus(@PathVariable("shipment-id") int shipmentId,
-                                                                     @PathVariable("statusName") String statusName) {
-        shipmentService.changeShipmentAndOrderStatus(shipmentId, statusName);
+    @PostMapping("/shipment-and-orders-status-change")
+    public ResponseEntity<?> changeShipmentAndOrderStatus(@RequestBody ShipmentStatusChangeDTO request) {
+        shipmentService.changeShipmentAndOrderStatus(request.getShipmentId(), request.getStatusName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
 
 }

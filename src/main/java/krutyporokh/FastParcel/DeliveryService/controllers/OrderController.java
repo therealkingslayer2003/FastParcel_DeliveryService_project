@@ -2,6 +2,7 @@ package krutyporokh.FastParcel.DeliveryService.controllers;
 
 import jakarta.validation.Valid;
 import krutyporokh.FastParcel.DeliveryService.DTO.OrderDTO;
+import krutyporokh.FastParcel.DeliveryService.DTO.OrderStatusChangeDTO;
 import krutyporokh.FastParcel.DeliveryService.services.EmployeeService;
 import krutyporokh.FastParcel.DeliveryService.services.OrderService;
 import lombok.AllArgsConstructor;
@@ -23,9 +24,9 @@ public class OrderController {
         return new ResponseEntity<>(responseOrderDTO,HttpStatus.CREATED);
     }
 
-    @PostMapping("/change-order-status/{id}/{newStatus}")
-    public ResponseEntity<?> changeOrderStatus(@PathVariable("id") Integer orderId, @PathVariable("newStatus") String newStatus) {
-        orderService.changeOrderStatusAndRecordHistory(orderId, newStatus);
+    @PostMapping("/order-status-change")
+    public ResponseEntity<?> changeOrderStatus(@RequestBody OrderStatusChangeDTO request) {
+        orderService.changeOrderStatusAndRecordHistory(request.getOrderId(), request.getOrderStatus());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
