@@ -32,7 +32,7 @@ Let's take a look at each role.
    Successful log in. We got generated JWT token.
 
    2. Registration a new order
-      ![image](https://github.com/therealkingslayer2003/FastParcel_DeliveryService_project/assets/93054726/8768d4a0-8d4d-4caa-b22b-31f049eee65a)
+      ![image](https://github.com/therealkingslayer2003/FastParcel_DeliveryService_project/assets/93054726/6f3bb1ef-6e63-49a5-bcfb-eca38b042d1d)
       ![image](https://github.com/therealkingslayer2003/FastParcel_DeliveryService_project/assets/93054726/82e3c171-eed1-4826-8c14-732b0f604a04)
       Order created
 
