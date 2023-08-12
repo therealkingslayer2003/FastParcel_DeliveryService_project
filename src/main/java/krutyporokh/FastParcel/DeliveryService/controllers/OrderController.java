@@ -1,9 +1,9 @@
 package krutyporokh.FastParcel.DeliveryService.controllers;
 
 import jakarta.validation.Valid;
-import krutyporokh.FastParcel.DeliveryService.DTO.OrderDTO;
+import krutyporokh.FastParcel.DeliveryService.DTO.OrderCreateDTO;
+import krutyporokh.FastParcel.DeliveryService.DTO.OrderResponseDTO;
 import krutyporokh.FastParcel.DeliveryService.DTO.OrderStatusChangeDTO;
-import krutyporokh.FastParcel.DeliveryService.services.EmployeeService;
 import krutyporokh.FastParcel.DeliveryService.services.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,9 +19,9 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/create-new-order")
-    public ResponseEntity<OrderDTO> createNewOrder(@Valid @RequestBody OrderDTO orderDTO){
-        OrderDTO responseOrderDTO = orderService.createNewOrder(orderDTO);
-        return new ResponseEntity<>(responseOrderDTO,HttpStatus.CREATED);
+    public ResponseEntity<OrderResponseDTO> createNewOrder(@Valid @RequestBody OrderCreateDTO orderCreateDTO){
+        OrderResponseDTO orderResponseDTO = orderService.createNewOrder(orderCreateDTO);
+        return new ResponseEntity<>(orderResponseDTO,HttpStatus.CREATED);
     }
 
     @PostMapping("/order-status-change")

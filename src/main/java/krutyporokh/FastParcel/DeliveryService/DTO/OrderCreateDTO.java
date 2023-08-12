@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class OrderDTO {
+public class OrderCreateDTO {
     @NotNull(message = "Client id should not be empty")
     private Integer clientId;
     @NotNull(message = "Office id should not be empty")
@@ -14,7 +14,7 @@ public class OrderDTO {
     @Max(value = 2000, message = "Weight should be max 2000 kg")
     private double weight;
     @NotNull(message = "Order category should not be empty")
-    private Integer orderCategory;
+    private Integer orderCategoryId;
     @NotNull(message = "Destination office id should not be empty")
     private Integer destinationOfficeId;
 }

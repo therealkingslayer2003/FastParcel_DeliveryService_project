@@ -24,7 +24,7 @@ public class ShipmentManagementController {
     }
 
     @GetMapping("/track-shipment-by-id/{id}")
-    public ResponseEntity<?> trackShipmentById(@PathVariable("id") int id){
+    public ResponseEntity<ShipmentResponseDTO> trackShipmentById(@PathVariable("id") int id){
         ShipmentResponseDTO shipmentResponseDTO = shipmentService.getTrackedShipment(id);
         return new ResponseEntity<>(shipmentResponseDTO, HttpStatus.OK);
     }

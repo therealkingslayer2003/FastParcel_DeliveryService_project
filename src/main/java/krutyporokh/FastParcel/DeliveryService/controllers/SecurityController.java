@@ -1,8 +1,8 @@
 package krutyporokh.FastParcel.DeliveryService.controllers;
 
 import jakarta.validation.Valid;
-import krutyporokh.FastParcel.DeliveryService.DTO.DriverDTO;
-import krutyporokh.FastParcel.DeliveryService.DTO.EmployeeDTO;
+import krutyporokh.FastParcel.DeliveryService.DTO.DriverCreateDTO;
+import krutyporokh.FastParcel.DeliveryService.DTO.EmployeeCreateDTO;
 import krutyporokh.FastParcel.DeliveryService.security.JwtTokenProvider;
 import krutyporokh.FastParcel.DeliveryService.services.EmployeeService;
 import lombok.AllArgsConstructor;
@@ -27,16 +27,16 @@ public class SecurityController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register/employee")
-    public ResponseEntity<HttpStatus> registerEmployee(@Valid @RequestBody EmployeeDTO employeeDto) {
+    public ResponseEntity<HttpStatus> registerEmployee(@Valid @RequestBody EmployeeCreateDTO employeeCreateDto) {
         try {
-            employeeService.registerEmployee(employeeDto);
+            employeeService.registerEmployee(employeeCreateDto);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
     @PostMapping("/register/driver")
-    public ResponseEntity<HttpStatus> registerDriver(@Valid @RequestBody DriverDTO driverDTO) {
+    public ResponseEntity<HttpStatus> registerDriver(@Valid @RequestBody DriverCreateDTO driverDTO) {
         try {
             employeeService.registerDriver(driverDTO);
             return ResponseEntity.ok(HttpStatus.OK);
@@ -47,12 +47,12 @@ public class SecurityController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody EmployeeDTO employeeDto) {
+    public ResponseEntity<?> authenticate(@RequestBody EmployeeCreateDTO employeeCreateDto) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            employeeDto.getEmail(),
-                            employeeDto.getPassword()
+                            employeeCreateDto.getEmail(),
+                            employeeCreateDto.getPassword()
                     )
             );
 

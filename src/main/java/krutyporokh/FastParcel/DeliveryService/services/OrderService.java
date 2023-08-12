@@ -1,7 +1,8 @@
 package krutyporokh.FastParcel.DeliveryService.services;
 
-import krutyporokh.FastParcel.DeliveryService.DTO.OrderDTO;
-import krutyporokh.FastParcel.DeliveryService.mappers.OrderMapper;
+import krutyporokh.FastParcel.DeliveryService.DTO.OrderCreateDTO;
+import krutyporokh.FastParcel.DeliveryService.DTO.OrderResponseDTO;
+import krutyporokh.FastParcel.DeliveryService.util.mappers.OrderMapper;
 import krutyporokh.FastParcel.DeliveryService.models.Order;
 import krutyporokh.FastParcel.DeliveryService.models.OrderStatus;
 import krutyporokh.FastParcel.DeliveryService.repositories.order.OrderRepository;
@@ -24,19 +25,21 @@ public class OrderService {
     private final OrderMapper orderMapper;
 
 
-    public OrderDTO createNewOrder(OrderDTO orderDTO) {
+    public OrderResponseDTO createNewOrder(OrderCreateDTO orderCreateDTO) {
         Order orderToSave = new Order();    //Creating a new order
 
         //Filling the fields
-        orderToSave.setClient(clientService.findById(orderDTO.getClientId()).
+        orderToSave.setClient(clientService.findById(orderCreateDTO.getClientId()).
                 orElseThrow(() -> new RuntimeException("Client not found")));
-        orderToSave.setSourceOffice(officeService.findById(orderDTO.getOfficeId()).
+        orderToSave.setSourceOffice(officeService.findById(orderCreateDTO.getOfficeId()).
                 orElseThrow(() -> new RuntimeException("Office not found")));
-        orderToSave.setWeight(orderDTO.getWeight());
-        orderToSave.setOrderCategory(orderCategoryService.findById(orderDTO.getOrderCategory()).
+        orderToSave.setWeight(orderCreateDTO.getWeight());
+        orderToSave.setOrderCategory(orderCategoryService.findById(orderCreateDTO.getOrderCategoryId()).
                 orElseThrow(() -> new RuntimeException("Order category not found")));
         orderToSave.setOrderStatus(orderStatusService.findByOrderStatusName("ACCEPTED").
                 orElseThrow(() -> new RuntimeException("Order status not found")));
+        orderToSave.setDestinationOffice(officeService.findById(orderCreateDTO.getDestinationOfficeId()).
+                orElseThrow(() -> new RuntimeException("Destination office not found")));
 
         orderRepository.save(orderToSave);
 

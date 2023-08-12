@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class EmployeeDTO {
+public class EmployeeCreateDTO {
     @NotEmpty(message = "Email should not be empty")
     @Email
     private String email;

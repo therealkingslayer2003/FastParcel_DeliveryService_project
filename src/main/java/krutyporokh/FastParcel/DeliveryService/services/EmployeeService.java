@@ -1,7 +1,7 @@
 package krutyporokh.FastParcel.DeliveryService.services;
 
-import krutyporokh.FastParcel.DeliveryService.DTO.DriverDTO;
-import krutyporokh.FastParcel.DeliveryService.DTO.EmployeeDTO;
+import krutyporokh.FastParcel.DeliveryService.DTO.DriverCreateDTO;
+import krutyporokh.FastParcel.DeliveryService.DTO.EmployeeCreateDTO;
 import krutyporokh.FastParcel.DeliveryService.models.Driver;
 import krutyporokh.FastParcel.DeliveryService.models.Employee;
 import krutyporokh.FastParcel.DeliveryService.models.EmployeeRole;
@@ -34,25 +34,25 @@ public class EmployeeService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public void registerEmployee(EmployeeDTO employeeDto) throws ChangeSetPersister.NotFoundException {
+    public void registerEmployee(EmployeeCreateDTO employeeCreateDto) throws ChangeSetPersister.NotFoundException {
         Employee employee = new Employee();
 
-        employee.setEmail(employeeDto.getEmail());
-        employee.setPassword(bCryptPasswordEncoder.encode(employeeDto.getPassword()));  //Encoding a password
-        employee.setName(employeeDto.getName());
-        employee.setPhoneNumber(employeeDto.getPhoneNumber());
+        employee.setEmail(employeeCreateDto.getEmail());
+        employee.setPassword(bCryptPasswordEncoder.encode(employeeCreateDto.getPassword()));  //Encoding a password
+        employee.setName(employeeCreateDto.getName());
+        employee.setPhoneNumber(employeeCreateDto.getPhoneNumber());
 
-        EmployeeRole employeeRole = employeeRoleRepository.findByEmployeeRoleName(employeeDto.getEmployeeRole())
+        EmployeeRole employeeRole = employeeRoleRepository.findByEmployeeRoleName(employeeCreateDto.getEmployeeRole())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid employee role"));
         employee.setEmployeeRole(employeeRole);
 
-        employee.setOffice(officeRepository.findById(employeeDto.getOfficeId()).   //Getting the Office object by ID from
+        employee.setOffice(officeRepository.findById(employeeCreateDto.getOfficeId()).   //Getting the Office object by ID from
                 orElseThrow(ChangeSetPersister.NotFoundException::new));
 
         employeeRepository.save(employee);
     }
 
-    public void registerDriver(DriverDTO driverDTO) throws ChangeSetPersister.NotFoundException {
+    public void registerDriver(DriverCreateDTO driverDTO) throws ChangeSetPersister.NotFoundException {
         registerEmployee(driverDTO);
 
         Driver driver = new Driver();

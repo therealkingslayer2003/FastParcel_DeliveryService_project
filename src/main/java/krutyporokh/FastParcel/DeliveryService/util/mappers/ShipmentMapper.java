@@ -1,4 +1,4 @@
-package krutyporokh.FastParcel.DeliveryService.mappers;
+package krutyporokh.FastParcel.DeliveryService.util.mappers;
 
 import org.springframework.stereotype.Component;
 import krutyporokh.FastParcel.DeliveryService.models.Shipment;

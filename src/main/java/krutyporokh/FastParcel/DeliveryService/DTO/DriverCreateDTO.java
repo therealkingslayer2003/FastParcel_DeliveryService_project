@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class DriverDTO extends EmployeeDTO{
+public class DriverCreateDTO extends EmployeeCreateDTO {
     @NotEmpty
     @Pattern(regexp = "^\\d{8}[A-Z]{2}$", message = "License number should keep the format: 12345678XX")
     private String licenseNumber;

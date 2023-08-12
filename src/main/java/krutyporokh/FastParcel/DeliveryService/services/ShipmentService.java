@@ -3,7 +3,7 @@ package krutyporokh.FastParcel.DeliveryService.services;
 import krutyporokh.FastParcel.DeliveryService.DTO.DriverShipmentsResponseDTO;
 import krutyporokh.FastParcel.DeliveryService.DTO.ShipmentCreateDTO;
 import krutyporokh.FastParcel.DeliveryService.DTO.ShipmentResponseDTO;
-import krutyporokh.FastParcel.DeliveryService.mappers.ShipmentMapper;
+import krutyporokh.FastParcel.DeliveryService.util.mappers.ShipmentMapper;
 import krutyporokh.FastParcel.DeliveryService.models.*;
 import krutyporokh.FastParcel.DeliveryService.repositories.shipment.ShipmentRepository;
 import lombok.AllArgsConstructor;
